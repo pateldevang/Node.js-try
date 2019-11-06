@@ -136,13 +136,14 @@ app.get('/attendAppointment/:PID',(req, res)=>{
 		});
 		
 	  });
-// 	db.collection("patient").updateOne(query, newvalues);
-// 	  fs.readFile('type.json', (err, data) => {
-// 		if (err) throw err;
-// 		student = JSON.parse(data);
-// 		res.send(student)
-// 	});
+
 })
 
+app.get('/getInventory',(req, res)=>{
+	
+	db.collection("inventory").find().toArray(function(err,doc){
+		res.send(doc)
+	})
+})
 
 app.listen(3000);
