@@ -125,12 +125,23 @@ app.get('/attendAppointment/:PID',(req, res)=>{
 	var paname=req.params.PID;
 	var query = { PIDID: paname };
 	var newvalues = { $set: { isappointment: "false" } };
-	db.collection("patient").updateOne(query, newvalues, function(err, res) {
-		// if (err) throw err;
+	db.collection("patient").updateOne(query, newvalues, function(err, doc) {
+		if (err) throw err;
 		console.log("1 document updated");
-		res.send("Rendering file")
+		fs.readFile('type.json', (err, data) => {
+			if (err) throw err;
+			student = JSON.parse(data);
+			console.log(student);
+			res.send(student)
+		});
 		
 	  });
+// 	db.collection("patient").updateOne(query, newvalues);
+// 	  fs.readFile('type.json', (err, data) => {
+// 		if (err) throw err;
+// 		student = JSON.parse(data);
+// 		res.send(student)
+// 	});
 })
 
 
