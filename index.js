@@ -7,6 +7,10 @@ let student = ""
 
 
 const mongoose = require("mongoose")
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', true);
+mongoose.set('useCreateIndex', true);
+mongoose.set('useUnifiedTopology', true);
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager')
 var db = mongoose.connection;
 
@@ -52,13 +56,13 @@ var db = mongoose.connection;
 
 
 
-fs.readFile('type.json', (err, data) => {
-    if (err) throw err;
-    student = JSON.parse(data);
-    console.log(student);
-});
+// fs.readFile('type.json', (err, data) => {
+//     if (err) throw err;
+//     student = JSON.parse(data);
+//     console.log(student);
+// });
 
-console.log('This is after the read call');
+// console.log('This is after the read call');
 app.use(bodyParser.json())
 app.get('/',(req,res)=>{
 	db.collection('tasks').find().toArray(function(err,doc){
@@ -115,6 +119,18 @@ app.get('/newappointment/:PID/:DOCID/:apptime',(req,res)=>{
 			});
 		
 	})
+})
+
+app.get('/attendAppointment/:PID',(req, res)=>{
+	var paname=req.params.PID;
+	var query = { PIDID: paname };
+	var newvalues = { $set: { isappointment: "false" } };
+	db.collection("patient").updateOne(query, newvalues, function(err, res) {
+		// if (err) throw err;
+		console.log("1 document updated");
+		res.send("Rendering file")
+		
+	  });
 })
 
 
